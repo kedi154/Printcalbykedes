@@ -882,7 +882,7 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
     </div>
     <div style="-webkit-flex:1;flex:1;">
       <div class="app-name">PrintCal <em>By Kêdes</em></div>
-      <div class="app-sub">Impressora 3D <span class="version-badge">v0.33</span></div>
+      <div class="app-sub">Impressora 3D <span class="version-badge">v0.35</span></div>
     </div>
     <button class="theme-btn" onclick="alternarTema()" title="Alternar tema" id="theme-btn" aria-label="Alternar tema claro/escuro">🌙</button>
     <button class="theme-btn" onclick="abrirChangelog()" title="O que há de novo" style="font-size:16px;" aria-label="Ver novidades da versão">📋</button>
@@ -1091,34 +1091,21 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
 
       <div class="section-title">Dados da impressão</div>
       <div class="card" style="padding:1rem;">
-        <div class="grid2" style="gap:10px;">
+
+        <!-- Linha 1: Nome + Peso -->
+        <div class="grid2" style="gap:10px;margin-bottom:10px;">
           <div class="field"><label>Nome do projeto</label><input type="text" id="nome" placeholder="Ex: Suporte de parede" autocomplete="off" /></div>
           <div class="field"><label>Peso do filamento <span>(g)</span></label><div class="suffix-wrap"><em>g</em><input type="number" id="peso" value="50" min="0" step="1" inputmode="numeric" oninput="calcular()" /></div></div>
+        </div>
+
+        <!-- Linha 2: Qtd + Cliente -->
+        <div class="grid2" style="gap:10px;margin-bottom:10px;">
           <div class="field"><label>Quantidade de peças</label><div class="suffix-wrap"><em>un</em><input type="number" id="qtd_pecas" value="1" min="1" step="1" inputmode="numeric" oninput="atualizarQtd()" /></div></div>
           <div class="field"><label>Cliente <span>(opcional)</span></label><select id="cliente-select"><option value="">— Sem cliente —</option></select></div>
-          <div class="field"><label>Data de entrega <span>(opcional)</span></label><input type="date" id="data_entrega" /></div>
-          <div class="field" style="grid-column:1/-1;"><label>Link do arquivo</label>
-            <div class="link-wrap"><input type="url" id="link_projeto" placeholder="https://makerworld.com/..." oninput="atualizarPlataforma()" inputmode="url" autocomplete="off" /><div class="link-platform"><span class="platform-tag" id="platform-tag">URL</span></div></div>
-          </div>
         </div>
 
-        <!-- FOTO DO PROJETO -->
-        <div style="margin-top:12px;">
-          <div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:6px;">Fotos da peça <span style="color:var(--text-3);font-weight:400;">(opcional)</span></div>
-          <div class="foto-area" id="foto-area">
-            <!-- botões adicionados via renderFotoArea() -->
-          </div>
-          <!-- Input galeria (sem capture) -->
-          <input type="file" id="foto-galeria" accept="image/*" multiple style="display:none;" onchange="adicionarFotos(event)" />
-          <!-- Input câmera (com capture) -->
-          <input type="file" id="foto-camera" accept="image/*" capture="environment" style="display:none;" onchange="adicionarFotos(event)" />
-        </div>
-      </div>
-
-      <!-- TEMPO + FALHAS COMPACTOS -->
-      <div class="section-title">Tempo e parâmetros</div>
-      <div class="card" style="padding:1rem;">
-        <div class="compact-row" style="-webkit-flex-wrap:wrap;flex-wrap:wrap;gap:10px;">
+        <!-- Linha 3: Tempo + Falhas + Data (compactos) -->
+        <div class="compact-row" style="-webkit-flex-wrap:wrap;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
           <div class="compact-field">
             <label>Horas</label>
             <div class="compact-input-wrap">
@@ -1127,10 +1114,10 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
             </div>
           </div>
           <div class="compact-field">
-            <label>Minutos</label>
+            <label>Min</label>
             <div class="compact-input-wrap">
               <input type="number" id="tempo_m" value="0" min="0" max="59" step="1" inputmode="numeric" oninput="calcular()" />
-              <em>min</em>
+              <em>m</em>
             </div>
           </div>
           <div class="compact-field">
@@ -1140,7 +1127,29 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
               <em>%</em>
             </div>
           </div>
+          <div class="compact-field" style="flex:1;min-width:130px;">
+            <label>Entrega</label>
+            <input type="date" id="data_entrega" style="border:1px solid var(--border-mid);border-radius:var(--radius-sm);padding:0 10px;font-size:13px;font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);height:42px;width:100%;-webkit-appearance:none;transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor=''" />
+          </div>
         </div>
+
+        <!-- Linha 4: Link do arquivo -->
+        <div class="field" style="margin-bottom:10px;">
+          <label>Link do arquivo <span>(opcional)</span></label>
+          <div class="link-wrap">
+            <input type="url" id="link_projeto" placeholder="https://makerworld.com/..." oninput="atualizarPlataforma()" inputmode="url" autocomplete="off" />
+            <div class="link-platform"><span class="platform-tag" id="platform-tag">URL</span></div>
+          </div>
+        </div>
+
+        <!-- Linha 5: Fotos -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Fotos <span style="font-weight:400;text-transform:none;letter-spacing:0;">(opcional)</span></div>
+          <div class="foto-area" id="foto-area"></div>
+          <input type="file" id="foto-galeria" accept="image/*" multiple style="display:none;" onchange="adicionarFotos(event)" />
+          <input type="file" id="foto-camera" accept="image/*" capture="environment" style="display:none;" onchange="adicionarFotos(event)" />
+        </div>
+
       </div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;margin:1.25rem 0 0.65rem;">
@@ -2033,16 +2042,46 @@ function renderPedidos(){
       '<div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">📝 Rascunhos (não entram no financeiro)</div>'+
       rascunhos.map(function(h){
         var ri=hist.indexOf(h);
-        return'<div class="pedido-item rascunho" style="opacity:0.75;border-style:dashed;cursor:pointer;" onclick="trocarAba(\'calc\');setTimeout(function(){usarComoBases('+ri+');},300)">'+
-          '<div style="-webkit-flex:1;flex:1;min-width:0;">'+
-            '<div class="pedido-nome" style="color:var(--text-2);">'+h.nome+'</div>'+
-            '<div class="pedido-sub"><span class="rascunho-badge">📝 Rascunho</span>'+
-              (h.dataEntrega?prazoLabel(h.dataEntrega):'<span style="font-size:11px;color:var(--text-3);">'+h.data+'</span>')+
+        var cn=h.clienteIdx!=null&&clientes[h.clienteIdx]?clientes[h.clienteIdx].nome:'—';
+        var tel=h.clienteIdx!=null&&clientes[h.clienteIdx]?clientes[h.clienteIdx].tel:'';
+        var wl=tel?'https://wa.me/55'+tel.replace(/\D/g,''):'';
+        var d=h.detalhe||{};
+        var detalheHtml='';
+        if(h.final){
+          detalheHtml='<div class="hist-detail-grid" style="margin-bottom:8px;">'+
+            '<div class="hist-detail" style="border-left:3px solid var(--text-3);"><div class="hist-detail-label">Preço estimado</div><div class="hist-detail-val" style="color:var(--text-2);">~'+fmt(h.final||0)+'</div></div>'+
+            '<div class="hist-detail"><div class="hist-detail-label">Custo</div><div class="hist-detail-val">'+fmt(d.com_falha||h.custo||0)+'</div></div>'+
+            '<div class="hist-detail"><div class="hist-detail-label">Margem</div><div class="hist-detail-val">'+(h.margem||0)+'%</div></div>'+
+            '<div class="hist-detail"><div class="hist-detail-label">Tempo</div><div class="hist-detail-val">'+(h.tempo||'—')+'</div></div>'+
+            (d.fil?'<div class="hist-detail"><div class="hist-detail-label">Filamento</div><div class="hist-detail-val">'+fmt(d.fil)+'</div></div>':'')+
+            (d.eng?'<div class="hist-detail"><div class="hist-detail-label">Energia</div><div class="hist-detail-val">'+fmt(d.eng)+'</div></div>':'')+
+          '</div>';
+        }
+        if(h.obs)detalheHtml+='<div class="hist-obs" style="margin-bottom:8px;">📝 '+h.obs+'</div>';
+        var clienteInfo='<div style="font-size:12px;color:var(--text-3);margin-bottom:8px;">Cliente: <strong>'+cn+'</strong>'+(h.dataEntrega?' · '+new Date(h.dataEntrega+'T00:00:00').toLocaleDateString('pt-BR'):'')+'</div>';
+        var acoes='<div style="display:flex;gap:8px;flex-wrap:wrap;">'+
+          (wl?'<a class="cli-whatsapp-btn" href="'+wl+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">💬 WhatsApp</a>':'')+
+          '<button class="btn" style="font-size:12px;padding:4px 12px;" onclick="event.stopPropagation();abrirEditarProjeto('+ri+')">✏️ Editar</button>'+
+          '<button class="btn" style="font-size:12px;padding:4px 12px;color:var(--green);border-color:#A0D9BC;" onclick="event.stopPropagation();usarComoBases('+ri+')">↩ Usar como base</button>'+
+          '<button class="btn" style="font-size:12px;padding:4px 12px;color:var(--red);border-color:#F09595;" onclick="event.stopPropagation();deletarHistComDesfazer('+ri+')">Excluir</button>'+
+        '</div>';
+        return'<div class="pedido-item rascunho" style="border-style:dashed;cursor:pointer;flex-direction:column;" onclick="togglePedidoResumo('+ri+')">'+
+          '<div style="display:flex;align-items:flex-start;gap:10px;width:100%;">'+
+            '<div style="-webkit-flex:1;flex:1;min-width:0;">'+
+              '<div class="pedido-nome" style="color:var(--text-2);">'+h.nome+'</div>'+
+              '<div class="pedido-sub">'+
+                '<span class="rascunho-badge">📝 Rascunho</span> '+
+                (h.dataEntrega?prazoLabel(h.dataEntrega):'<span style="font-size:11px;color:var(--text-3);">'+h.data+'</span>')+
+              '</div>'+
+              '<div class="pedido-cli">'+cn+(h.dataEntrega?' · '+new Date(h.dataEntrega+'T00:00:00').toLocaleDateString('pt-BR'):'')+'</div>'+
+            '</div>'+
+            '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">'+
+              '<span style="font-size:14px;font-weight:600;color:var(--text-3);">~'+fmt(h.final||0)+'</span>'+
+              '<span style="font-size:10px;color:var(--text-3);" id="ped-chevron-'+ri+'">▸ detalhes</span>'+
             '</div>'+
           '</div>'+
-          '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">'+
-            '<span style="font-size:14px;font-weight:600;color:var(--text-3);">~'+fmt(h.final||0)+'</span>'+
-            '<span style="font-size:10px;color:var(--text-3);">toque para usar</span>'+
+          '<div class="pedido-resumo" id="ped-resumo-'+ri+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">'+
+            detalheHtml+clienteInfo+acoes+
           '</div>'+
         '</div>';
       }).join('')+
@@ -2774,7 +2813,7 @@ function testarNotificacao(){
 /* ── CHANGELOG IN-APP ── */
 var CHANGELOG=[
   {
-    versao:'v0.33',
+    versao:'v0.35',
     titulo:'Qualidade e robustez',
     itens:[
       'QRCode.js removido — menos 20KB por carregamento',
@@ -2854,7 +2893,7 @@ function abrirChangelog(){
   document.getElementById('changelog-overlay').classList.add('open');
   haptic('light');
   /* Marca como visto */
-  localStorage.setItem('changelog-seen','v0.33');
+  localStorage.setItem('changelog-seen','v0.35');
 }
 function fecharChangelog(e){
   if(!e||e.target===document.getElementById('changelog-overlay'))
@@ -2862,7 +2901,7 @@ function fecharChangelog(e){
 }
 function verificarChangelog(){
   var visto=localStorage.getItem('changelog-seen');
-  if(visto!=='v0.33'){
+  if(visto!=='v0.35'){
     setTimeout(abrirChangelog,3000);
   }
 }
