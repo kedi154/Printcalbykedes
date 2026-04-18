@@ -882,7 +882,7 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
     </div>
     <div style="-webkit-flex:1;flex:1;">
       <div class="app-name">PrintCal <em>By Kêdes</em></div>
-      <div class="app-sub">Impressora 3D <span class="version-badge">v0.35</span></div>
+      <div class="app-sub">Impressora 3D <span class="version-badge">v0.38</span></div>
     </div>
     <button class="theme-btn" onclick="alternarTema()" title="Alternar tema" id="theme-btn" aria-label="Alternar tema claro/escuro">🌙</button>
     <button class="theme-btn" onclick="abrirChangelog()" title="O que há de novo" style="font-size:16px;" aria-label="Ver novidades da versão">📋</button>
@@ -1288,19 +1288,26 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
             <button class="mkt-btn" id="mkt-magalu" onclick="selecionarMkt('magalu',16,'Magalu')">Magalu</button>
             <button class="mkt-btn" id="mkt-custom" onclick="selecionarMkt('custom',0,'Outro')">Outro</button>
           </div>
-          <div class="mkt-custom-row">
-            <label>Taxa do marketplace</label>
-            <div class="field" style="margin:0;flex:1;">
-              <div class="suffix-wrap">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div class="compact-field">
+              <label>Taxa</label>
+              <div class="compact-input-wrap">
+                <input type="number" id="mkt-taxa" value="14" min="0" max="50" step="0.1" inputmode="decimal" oninput="calcularMkt()" style="width:52px;" />
                 <em>%</em>
-                <input type="number" id="mkt-taxa" value="14" min="0" max="50" step="0.1" inputmode="decimal" oninput="calcularMkt()" style="font-size:15px;"/>
               </div>
             </div>
-            <label style="white-space:nowrap;">+ frete</label>
-            <div class="field" style="margin:0;width:90px;">
-              <div class="suffix-wrap">
-                <em>R$</em>
-                <input type="number" id="mkt-frete" value="0" min="0" step="0.5" inputmode="decimal" oninput="calcularMkt()" style="font-size:15px;"/>
+            <div class="compact-field">
+              <label>Custo fixo</label>
+              <div class="compact-input-wrap" style="justify-content:space-between;">
+                <span style="font-size:11px;color:var(--text-3);padding-left:8px;font-weight:600;">R$</span>
+                <input type="number" id="mkt-fixo" value="0" min="0" step="0.5" inputmode="decimal" oninput="calcularMkt()" style="width:60px;text-align:right;padding-right:8px;" />
+              </div>
+            </div>
+            <div class="compact-field">
+              <label>Frete</label>
+              <div class="compact-input-wrap" style="justify-content:space-between;">
+                <span style="font-size:11px;color:var(--text-3);padding-left:8px;font-weight:600;">R$</span>
+                <input type="number" id="mkt-frete" value="0" min="0" step="0.5" inputmode="decimal" oninput="calcularMkt()" style="width:60px;text-align:right;padding-right:8px;" />
               </div>
             </div>
           </div>
@@ -1313,6 +1320,10 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
               <div class="mkt-res-item">
                 <div class="mkt-res-label">Taxa da plataforma</div>
                 <div class="mkt-res-val perda" id="mkt-taxa-val">—</div>
+              </div>
+              <div class="mkt-res-item" id="mkt-fixo-label" style="display:none;">
+                <div class="mkt-res-label">Custo fixo</div>
+                <div class="mkt-res-val perda" id="mkt-fixo-val">—</div>
               </div>
               <div class="mkt-res-item">
                 <div class="mkt-res-label">Você recebe líquido</div>
@@ -1490,6 +1501,40 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
           Exemplo: projeto de <strong>R$ 100,00</strong> → com <span id="cfg_taxa_exemplo_pct">4,98</span>% de taxa → você recebe <strong id="cfg_taxa_exemplo_val">R$ 95,02</strong> → deve cobrar <strong id="cfg_taxa_exemplo_cobrar">R$ 105,24</strong>
         </div>
       </div>
+
+      <div class="section-title">Marketplace padrão</div>
+      <div class="card" style="padding:1rem;">
+        <div style="font-size:12px;color:var(--text-3);margin-bottom:12px;line-height:1.6;">Define os valores que já aparecem preenchidos ao abrir o painel de marketplace na calculadora. Você ainda pode alterar a qualquer momento.</div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Plataforma padrão</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="mkt-btn" id="cfg-mkt-ml"      onclick="setCfgMkt('ml',14,'Mercado Livre')">Mercado Livre</button>
+            <button class="mkt-btn" id="cfg-mkt-shopee"  onclick="setCfgMkt('shopee',14,'Shopee')">Shopee</button>
+            <button class="mkt-btn" id="cfg-mkt-elo7"    onclick="setCfgMkt('elo7',12,'Elo7')">Elo7</button>
+            <button class="mkt-btn" id="cfg-mkt-amazon"  onclick="setCfgMkt('amazon',15,'Amazon')">Amazon</button>
+            <button class="mkt-btn" id="cfg-mkt-magalu"  onclick="setCfgMkt('magalu',16,'Magalu')">Magalu</button>
+            <button class="mkt-btn" id="cfg-mkt-nenhum"  onclick="setCfgMkt('',0,'Nenhum')" class="active">Nenhum</button>
+          </div>
+        </div>
+        <div class="grid2" style="gap:10px;">
+          <div class="field">
+            <label>Taxa padrão <span>(%)</span></label>
+            <div class="suffix-wrap"><em>%</em><input type="number" id="cfg_mkt_taxa" value="0" min="0" max="50" step="0.1" inputmode="decimal" placeholder="Ex: 14" oninput="atualizarExemploMkt()" /></div>
+          </div>
+          <div class="field">
+            <label>Custo fixo <span>(R$)</span></label>
+            <div class="suffix-wrap"><em>R$</em><input type="number" id="cfg_mkt_fixo" value="0" min="0" step="0.5" inputmode="decimal" placeholder="Ex: 2,00" oninput="atualizarExemploMkt()" /></div>
+          </div>
+          <div class="field">
+            <label>Frete padrão <span>(R$)</span></label>
+            <div class="suffix-wrap"><em>R$</em><input type="number" id="cfg_mkt_frete" value="0" min="0" step="0.5" inputmode="decimal" placeholder="Ex: 15" oninput="atualizarExemploMkt()" /></div>
+          </div>
+        </div>
+        <div style="margin-top:10px;padding:8px 12px;background:var(--bg);border-radius:var(--radius-sm);font-size:12px;color:var(--text-3);" id="cfg-mkt-exemplo">
+          Sem plataforma padrão — painel abre em branco.
+        </div>
+      </div>
+
       <button class="btn save-cfg" onclick="salvarConfig()">Salvar configurações</button>
       <div class="section-title">Notificações</div>
       <div class="backup-box">
@@ -1604,6 +1649,7 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
             <option value="impressao">Em impressão</option>
             <option value="aguardando">Ag. pagamento</option>
             <option value="concluido">Concluído</option>
+            <option value="rascunho">📝 Rascunho</option>
           </select>
         </div>
         <div class="field"><label>Data de entrega</label><input type="date" id="edit_data_entrega"/></div>
@@ -1971,7 +2017,7 @@ function atualizarBadgePedidos(){
   });
 }
 
-function statusLabel(s){return{pendente:'Pendente',impressao:'Em impressão',concluido:'Concluído',aguardando:'Ag. pagamento'}[s]||'Pendente';}
+function statusLabel(s){return{pendente:'Pendente',impressao:'Em impressão',concluido:'Concluído',aguardando:'Ag. pagamento',rascunho:'📝 Rascunho'}[s]||'Pendente';}
 function diasParaEntrega(d){if(!d)return null;var hoje=new Date();hoje.setHours(0,0,0,0);var dt=new Date(d+'T00:00:00');return Math.round((dt-hoje)/(1000*60*60*24));}
 function prazoLabel(d){if(!d)return '';var n=diasParaEntrega(d);if(n===null)return '';if(n<0)return'<span class="prazo-badge vencido">'+Math.abs(n)+'d atrasado</span>';if(n===0)return'<span class="prazo-badge proximo">Hoje!</span>';if(n<=3)return'<span class="prazo-badge proximo">'+n+'d</span>';return'<span class="prazo-badge ok">'+n+'d</span>';}
 
@@ -2100,6 +2146,7 @@ function togglePedidoResumo(ri){
 }
 
 function ciclarStatus(i){
+  if(hist[i].rascunho){toast('⚠ Rascunho não tem status. Use Editar para converter em pedido.');return;}
   haptic('medium');
   var ordem=['pendente','impressao','aguardando','concluido'];
   var s=hist[i].status||'pendente';
@@ -2205,6 +2252,22 @@ function carregarConfig(){
   var elTc=document.getElementById('cfg_taxa_cartao');if(elTc)elTc.value=tc;
   var elTd=document.getElementById('cfg_taxa_desc');if(elTd)elTd.value=td;
   atualizarExemploCartao();
+  /* Marketplace padrão */
+  if(cfg.mkt_plat!==undefined){
+    window._cfgMktPlat=cfg.mkt_plat;
+    var elMktTaxa=document.getElementById('cfg_mkt_taxa');
+    var elMktFixo=document.getElementById('cfg_mkt_fixo');
+    var elMktFrete=document.getElementById('cfg_mkt_frete');
+    if(elMktTaxa)elMktTaxa.value=cfg.mkt_taxa||0;
+    if(elMktFixo)elMktFixo.value=cfg.mkt_fixo||0;
+    if(elMktFrete)elMktFrete.value=cfg.mkt_frete||0;
+    /* Marca botão ativo na Config */
+    ['ml','shopee','elo7','amazon','magalu','nenhum'].forEach(function(k){
+      var el=document.getElementById('cfg-mkt-'+k);
+      if(el)el.classList.toggle('active',k===(cfg.mkt_plat||'nenhum'));
+    });
+    atualizarExemploMkt();
+  }
   /* Resumo dos custos */
   var el=document.getElementById('custo-resumo');
   if(el&&cfg.watts!==undefined){
@@ -2228,7 +2291,6 @@ function atualizarExemploCartao(){
 }
 
 function salvarConfig(){
-  /* Validação de campos críticos */
   var erros=[];
   var preco_rolo=+document.getElementById('cfg_preco_rolo').value;
   var watts=+document.getElementById('cfg_watts').value;
@@ -2238,15 +2300,10 @@ function salvarConfig(){
   if(watts<=0)erros.push('Potência da impressora deve ser maior que zero');
   if(kwh<=0)erros.push('Tarifa de energia deve ser maior que zero');
   if(vida<=0)erros.push('Vida útil deve ser maior que zero');
-  if(erros.length>0){
-    toast('⚠ '+erros[0]);
-    haptic('warning');
-    return;
-  }
+  if(erros.length>0){toast('⚠ '+erros[0]);haptic('warning');return;}
   haptic('success');
   cfg={
-    watts:watts,
-    kwh:kwh,
+    watts:watts,kwh:kwh,
     val_imp:Math.max(0,+document.getElementById('cfg_val_imp').value),
     vida:vida,
     mao:Math.max(0,+document.getElementById('cfg_mao').value),
@@ -2255,7 +2312,11 @@ function salvarConfig(){
     taxa_cartao:Math.max(0,+document.getElementById('cfg_taxa_cartao').value||0),
     taxa_desc:document.getElementById('cfg_taxa_desc').value.trim(),
     empresa:document.getElementById('cfg_empresa').value.trim(),
-    contato_emp:document.getElementById('cfg_contato_emp').value.trim()
+    contato_emp:document.getElementById('cfg_contato_emp').value.trim(),
+    mkt_plat:window._cfgMktPlat||'',
+    mkt_taxa:Math.max(0,+document.getElementById('cfg_mkt_taxa').value||0),
+    mkt_fixo:Math.max(0,+document.getElementById('cfg_mkt_fixo').value||0),
+    mkt_frete:Math.max(0,+document.getElementById('cfg_mkt_frete').value||0)
   };
   try{localStorage.setItem('cfg3d',JSON.stringify(cfg));}catch(e){}
   carregarConfig();
@@ -2265,7 +2326,7 @@ function salvarConfig(){
 
 function exportarBackup(){
   haptic('medium');
-  var dados={versao:'0.11',data:new Date().toISOString(),hist:hist,fils:fils,cfg:cfg,clientes:clientes};
+  var dados={versao:'0.37',data:new Date().toISOString(),hist:hist,fils:fils,cfg:cfg,clientes:clientes};
   var json=JSON.stringify(dados,null,2);
   try{
     var blob=new Blob([json],{type:'application/json'});
@@ -2434,30 +2495,33 @@ function toggleHist(i){document.getElementById('hbody-'+i).classList.toggle('ope
 function limpar(){
   haptic('light');
   ['nome','obs','link_projeto'].forEach(function(id){document.getElementById(id).value='';});
-  document.getElementById('peso').value=50;document.getElementById('tempo_h').value=3;document.getElementById('tempo_m').value=0;document.getElementById('falha').value=5;
-  document.getElementById('cliente-select').value='';document.getElementById('data_entrega').value='';
-  atualizarPlataforma();for(var s=0;s<4;s++)document.getElementById('ams-'+s).value='';atualizarDots();
-  fotosAtuais=[];renderFotoArea();
+  document.getElementById('peso').value=50;
+  document.getElementById('tempo_h').value=3;
+  document.getElementById('tempo_m').value=0;
+  document.getElementById('falha').value=5;
   document.getElementById('qtd_pecas').value=1;
-  document.getElementById('salvar-rascunho').checked=false;
-  document.getElementById('nome').value='';
-  document.getElementById('link_projeto').value='';
   document.getElementById('data_entrega').value='';
   document.getElementById('cliente-select').value='';
+  document.getElementById('salvar-rascunho').checked=false;
   atualizarPlataforma();
+  for(var s=0;s<4;s++)document.getElementById('ams-'+s).value='';
+  atualizarDots();
+  fotosAtuais=[];renderFotoArea();
   document.getElementById('qtd-result').style.display='none';
   document.getElementById('share-btn-box').style.display='none';
+  document.getElementById('resultados').style.display='none';
+  document.getElementById('preco-minimo-box').style.display='none';
   document.getElementById('mkt-box').style.display='none';
   document.getElementById('mkt-body').classList.remove('open');
   document.getElementById('mkt-chevron').classList.remove('open');
   document.getElementById('mkt-resultado').style.display='none';
+  document.getElementById('mkt-taxa').value=cfg.mkt_taxa||14;
+  document.getElementById('mkt-fixo').value=cfg.mkt_fixo||0;
+  document.getElementById('mkt-frete').value=cfg.mkt_frete||0;
   _mktPlat='';
   ['ml','shopee','elo7','amazon','magalu','custom'].forEach(function(k){
     var el=document.getElementById('mkt-'+k);if(el)el.classList.remove('active');
   });
-  document.getElementById('resultados').style.display='none';
-  document.getElementById('preco-minimo-box').style.display='none';
-
   window._last=null;
 }
 
@@ -2475,7 +2539,10 @@ function renderHist(){
     }
     return passaBusca&&passaFiltro;
   });
-  var total=filtroHistAtual==='todos'?hist.length:hist.filter(function(h){return(h.status||'pendente')===filtroHistAtual;}).length;
+  var total;
+  if(filtroHistAtual==='todos')total=hist.filter(function(h){return !h.rascunho;}).length;
+  else if(filtroHistAtual==='rascunho')total=hist.filter(function(h){return h.rascunho===true;}).length;
+  else total=hist.filter(function(h){return !h.rascunho&&(h.status||'pendente')===filtroHistAtual;}).length;
   document.getElementById('hist-count').textContent=(busca||filtroHistAtual!=='todos')?'Mostrando '+filtrado.length+' de '+total+' projeto'+(total!==1?'s':''):'';
   var el=document.getElementById('historico');
   if(!hist.length){el.innerHTML=emptyStateHist();return;}
@@ -2813,68 +2880,116 @@ function testarNotificacao(){
 /* ── CHANGELOG IN-APP ── */
 var CHANGELOG=[
   {
+    versao:'v0.38',
+    titulo:'Correções e auditoria de código',
+    itens:[
+      'limpar() corrigido — eliminadas duplicações, reseta campos de marketplace',
+      'ciclarStatus() não altera mais projetos marcados como rascunho',
+      'Opção Rascunho adicionada no modal de edição de projeto',
+      'Contagem do histórico corrigida para filtro de rascunhos',
+      'Custo fixo do marketplace oculta linha quando vazio (sem closest frágil)'
+    ]
+  },
+  {
+    versao:'v0.37',
+    titulo:'Marketplace com custo fixo',
+    itens:[
+      'Campo de custo fixo (ex: Shopee R$ 2,00 por venda) no painel de marketplace',
+      'Fórmula atualizada: cobrar = (base + fixo + frete) ÷ (1 − taxa%)',
+      'Campos de taxa, custo fixo e frete em grid compacto e equilibrado',
+      'Pré-definição de marketplace padrão na Config salva taxa, fixo e frete',
+      'Valores da Config carregados automaticamente ao abrir o painel'
+    ]
+  },
+  {
+    versao:'v0.36',
+    titulo:'Marketplace pré-definido na Config',
+    itens:[
+      'Seção Marketplace padrão na aba Config',
+      'Escolha da plataforma padrão com taxa e frete pré-preenchidos',
+      'Exemplo dinâmico mostra impacto ao configurar',
+      'Painel da calculadora carrega automaticamente os valores da Config'
+    ]
+  },
+  {
     versao:'v0.35',
+    titulo:'Layout da calculadora reorganizado',
+    itens:[
+      'Formulário em card único: Nome, Peso, Qtd, Cliente, Tempo, Falhas, Entrega',
+      'Campos de hora, minuto, falhas e data de entrega em linha compacta',
+      'Link do arquivo e fotos abaixo dos campos principais',
+      'Seção Tempo e parâmetros eliminada — fluxo mais direto'
+    ]
+  },
+  {
+    versao:'v0.34',
+    titulo:'Rascunho expansível nos pedidos',
+    itens:[
+      'Rascunhos na aba Pedidos expandem igual pedido normal ao tocar',
+      'Mostram custo, margem, tempo, cliente e ações (Editar, Usar como base, Excluir)',
+      'Campo de tempo movido antes da data de entrega na calculadora'
+    ]
+  },
+  {
+    versao:'v0.33',
+    titulo:'Persistência e exibição de rascunhos',
+    itens:[
+      'Rascunhos locais preservados ao recarregar dados da nuvem (mesclagem por dataISO)',
+      'Rascunhos recentes aparecem na aba Pedidos com seção separada e visual tracejado',
+      'Cliente e prazo permitidos em rascunhos',
+      'Rascunho pode ter prazo — aparece na seção de rascunhos dos pedidos'
+    ]
+  },
+  {
+    versao:'v0.32',
+    titulo:'Modo rascunho',
+    itens:[
+      'Toggle Salvar como rascunho na calculadora',
+      'Rascunhos não entram no financeiro, widget, pedidos nem notificações',
+      'Filtro Rascunho na barra do histórico',
+      'Visual distinto: borda tracejada, badge 📝, preço com ~'
+    ]
+  },
+  {
+    versao:'v0.31',
+    titulo:'Aniversário de clientes e máscara de telefone',
+    itens:[
+      'Campo de aniversário (DD/MM) no cadastro de clientes',
+      'Alerta dourado ao abrir o app quando cliente faz aniversário hoje',
+      'Notificação do sistema se permitida',
+      'Máscara automática de telefone no padrão brasileiro (fixo e celular)'
+    ]
+  },
+  {
+    versao:'v0.30',
     titulo:'Qualidade e robustez',
     itens:[
-      'QRCode.js removido — menos 20KB por carregamento',
-      'Service Worker atualizado para limpar cache de versões antigas',
-      'Proteção contra divisão por zero no cálculo (vida útil, potência, rolo)',
-      'Configurações validam campos obrigatórios antes de salvar',
-      'Logs de debug removidos do console em produção',
-      'Função getClienteInfo unifica lógica duplicada entre histórico e pedidos'
-    ]
-  },
-  {
-    versao:'v0.29',
-    titulo:'Auditoria e correções de código',
-    itens:[
-      'Modo demo não sobrescreve mais dados reais no Firebase',
-      'Detecção de offline funciona ao abrir o app, não só ao mudar de estado',
-      'Onboarding personaliza título e descrição com nome do usuário',
-      'Variáveis e funções mortas removidas (histPagina, renderHistLazy, etc)',
-      'CSS de recursos removidos limpo (QR, templates)'
-    ]
-  },
-  {
-    versao:'v0.28',
-    titulo:'Bugs e melhorias de fluxo',
-    itens:[
-      'Salvar sem calcular mostra aviso em vez de salvar valores zerados',
-      'Cálculo atualiza automaticamente ao mudar peso e falhas',
-      'Toggle AMS — slots ficam ocultos por padrão para quem não usa',
-      'Observação movida para o final do formulário',
-      'Botão Usar como base carrega projeto na calculadora',
-      'Banner de pagamento pendente só dispara após dados da nuvem carregarem'
+      'QRCode.js removido — 20KB a menos por carregamento',
+      'Service Worker atualizado (cache printcal-v30)',
+      'calcularBase() protege contra divisão por zero e NaN',
+      'salvarConfig() valida campos obrigatórios antes de salvar',
+      'getClienteInfo() elimina lógica duplicada entre histórico e pedidos',
+      'Aria-label nos botões principais para acessibilidade'
     ]
   },
   {
     versao:'v0.27',
-    titulo:'Marketplace e sync entre dispositivos',
+    titulo:'Marketplace e correção de sync',
     itens:[
-      'Painel de marketplace com Mercado Livre, Shopee, Elo7, Amazon, Magalu',
-      'Cálculo do preço correto para cobrir taxa da plataforma',
-      'Correção de race condition no carregamento de dados da nuvem',
-      'renderPedidos() adicionado ao carregar dados do Firebase'
+      'Painel de marketplace: Mercado Livre, Shopee, Elo7, Amazon, Magalu',
+      'Cálculo correto do preço para cobrir taxa e frete da plataforma',
+      'Correção de race condition — dados da nuvem carregam corretamente ao reabrir',
+      'Botão Usar como base — carrega parâmetros do projeto na calculadora'
     ]
   },
   {
     versao:'v0.26',
-    titulo:'Limpeza e polimento',
+    titulo:'Limpeza do sistema de sync manual',
     itens:[
       'Seção de sincronização manual Firebase removida da Config',
       'Badge Local/Nuvem do header removido',
-      'Paleta de cores refinada — tons mais suaves e limpos',
-      'QR Code e Templates removidos do fluxo principal'
-    ]
-  },
-  {
-    versao:'v0.25',
-    titulo:'Redesign minimalista',
-    itens:[
-      'Cards sem sombra, bordas mais sutis',
-      'Labels dos campos em uppercase pequeno',
-      'Inputs com fundo neutro e foco em branco',
-      'Bottom nav e botões mais compactos'
+      '~6.600 caracteres de código legado eliminados',
+      'Sync automático por Auth continua funcionando normalmente'
     ]
   }
 ];
@@ -2893,7 +3008,7 @@ function abrirChangelog(){
   document.getElementById('changelog-overlay').classList.add('open');
   haptic('light');
   /* Marca como visto */
-  localStorage.setItem('changelog-seen','v0.35');
+  localStorage.setItem('changelog-seen','v0.38');
 }
 function fecharChangelog(e){
   if(!e||e.target===document.getElementById('changelog-overlay'))
@@ -2901,7 +3016,7 @@ function fecharChangelog(e){
 }
 function verificarChangelog(){
   var visto=localStorage.getItem('changelog-seen');
-  if(visto!=='v0.35'){
+  if(visto!=='v0.38'){
     setTimeout(abrirChangelog,3000);
   }
 }
@@ -3333,52 +3448,122 @@ function fecharPagamentoBanner(){
 
 /* ── MARKETPLACE ── */
 var _mktPlat='';
+window._cfgMktPlat='';
+
+/* Funções da Config de marketplace */
+function setCfgMkt(plat,taxa,nome){
+  window._cfgMktPlat=plat;
+  ['ml','shopee','elo7','amazon','magalu','nenhum'].forEach(function(k){
+    var el=document.getElementById('cfg-mkt-'+k);
+    if(el)el.classList.toggle('active',k===(plat||'nenhum'));
+  });
+  document.getElementById('cfg_mkt_taxa').value=taxa;
+  atualizarExemploMkt();
+  haptic('light');
+}
+function atualizarExemploMkt(){
+  var el=document.getElementById('cfg-mkt-exemplo');
+  if(!el)return;
+  var taxa=+document.getElementById('cfg_mkt_taxa').value||0;
+  var fixo=+document.getElementById('cfg_mkt_fixo').value||0;
+  var frete=+document.getElementById('cfg_mkt_frete').value||0;
+  var plat=window._cfgMktPlat||'';
+  if(!plat||taxa===0){el.textContent='Sem plataforma padrão — painel abre em branco.';return;}
+  var nomes={ml:'Mercado Livre',shopee:'Shopee',elo7:'Elo7',amazon:'Amazon',magalu:'Magalu'};
+  var nomePlat=nomes[plat]||'Plataforma';
+  var divisor=taxa<100?(1-taxa/100):0.01;
+  var cobrar=(100+fixo+frete)/divisor;
+  var partes=['Taxa '+taxa+'%'];
+  if(fixo>0)partes.push('custo fixo R$'+fixo.toFixed(2).replace('.',','));
+  if(frete>0)partes.push('frete R$'+frete.toFixed(2).replace('.',','));
+  el.innerHTML='<strong>'+nomePlat+'</strong> · '+partes.join(' · ')+'<br>'+
+    'Ex: produto R$ 100 → cobrar <strong>'+fmt(cobrar)+'</strong> no marketplace';
+}
+
 function toggleMkt(){
   var body=document.getElementById('mkt-body');
   var chev=document.getElementById('mkt-chevron');
   var open=body.classList.toggle('open');
   chev.classList.toggle('open',open);
-  if(open&&window._last)calcularMkt();
+  if(open){
+    /* Preenche com valores padrão da config se ainda não tiver selecionado */
+    if(!_mktPlat&&cfg.mkt_plat){
+      _mktPlat=cfg.mkt_plat;
+      ['ml','shopee','elo7','amazon','magalu','custom'].forEach(function(k){
+        var el=document.getElementById('mkt-'+k);
+        if(el)el.classList.toggle('active',k===cfg.mkt_plat);
+      });
+      document.getElementById('mkt-taxa').value=cfg.mkt_taxa||0;
+      document.getElementById('mkt-fixo').value=cfg.mkt_fixo||0;
+      document.getElementById('mkt-frete').value=cfg.mkt_frete||0;
+    }
+    if(window._last)calcularMkt();
+  }
 }
 function selecionarMkt(plat,taxa,nome){
   _mktPlat=plat;
-  /* Atualiza botões */
   ['ml','shopee','elo7','amazon','magalu','custom'].forEach(function(k){
     var el=document.getElementById('mkt-'+k);
     if(el)el.classList.toggle('active',k===plat);
   });
   document.getElementById('mkt-taxa').value=taxa;
+  /* Usa custo fixo e frete da config se for a mesma plataforma salva */
+  if(cfg.mkt_plat&&cfg.mkt_plat===plat){
+    document.getElementById('mkt-fixo').value=cfg.mkt_fixo||0;
+    document.getElementById('mkt-frete').value=cfg.mkt_frete||0;
+  }else{
+    document.getElementById('mkt-fixo').value=0;
+    /* Mantém frete se já tiver sido digitado */
+  }
   calcularMkt();
   haptic('light');
 }
 function calcularMkt(){
   if(!window._last)return;
   var taxa=+document.getElementById('mkt-taxa').value||0;
+  var fixo=+document.getElementById('mkt-fixo').value||0;
   var frete=+document.getElementById('mkt-frete').value||0;
   var custo=window._last.com_falha||0;
   var precoBase=window._last.final||0;
   if(precoBase<=0)return;
 
-  /* Preço que precisa cobrar para receber o precoBase após a taxa */
-  /* cobrar = (precoBase + frete) / (1 - taxa/100) */
-  var cobrar=(precoBase+frete)/(1-taxa/100);
+  /* Fórmula: cobrar = (precoBase + fixo + frete) / (1 - taxa/100)
+     Assim após descontar taxa%, custo fixo e frete, você recebe exatamente precoBase */
+  var divisor=taxa<100?(1-taxa/100):0.01;
+  var cobrar=(precoBase+fixo+frete)/divisor;
   var taxaValor=cobrar*(taxa/100);
-  var liquido=cobrar-taxaValor;
+  var liquido=cobrar-taxaValor-fixo;
   var lucroReal=liquido-frete-custo;
   var margemReal=custo>0?((lucroReal/custo)*100):0;
 
   document.getElementById('mkt-cobrar').textContent=fmt(cobrar);
   document.getElementById('mkt-taxa-val').textContent='−'+fmt(taxaValor)+' ('+taxa+'%)';
+
+  /* Custo fixo — mostra/oculta linha inteira */
+  var elFixo=document.getElementById('mkt-fixo-val');
+  var elFixoLabel=document.getElementById('mkt-fixo-label');
+  if(fixo>0){
+    if(elFixo){elFixo.textContent='−'+fmt(fixo);elFixo.style.display='';}
+    if(elFixoLabel)elFixoLabel.style.display='';
+  }else{
+    if(elFixo)elFixo.style.display='none';
+    if(elFixoLabel)elFixoLabel.style.display='none';
+  }
+
   document.getElementById('mkt-liquido').textContent=fmt(liquido);
 
   var lucroEl=document.getElementById('mkt-lucro-real');
   lucroEl.textContent=fmt(lucroReal)+' ('+margemReal.toFixed(0)+'%)';
-  lucroEl.className='mkt-res-val'+(lucroReal<0?' perda':lucroReal<precoBase*0.1?' ':' ');
+  lucroEl.className='mkt-res-val'+(lucroReal<0?' perda':'');
 
-  /* Aviso */
+  /* Aviso detalhado */
+  var partes=[];
+  if(taxa>0)partes.push('taxa '+taxa+'%');
+  if(fixo>0)partes.push('custo fixo '+fmt(fixo));
+  if(frete>0)partes.push('frete '+fmt(frete));
   var aviso='';
-  if(frete>0)aviso+='Frete de '+fmt(frete)+' embutido no preço. ';
-  if(lucroReal<0)aviso+='⚠ Com essa taxa, você terá prejuízo. Considere aumentar o preço base.';
+  if(partes.length)aviso='Inclui: '+partes.join(' + ')+'. ';
+  if(lucroReal<0)aviso+='⚠ Com esses custos, você terá prejuízo. Considere aumentar o preço base.';
   else if(margemReal<10)aviso+='⚠ Margem baixa ('+margemReal.toFixed(0)+'%). Considere revisar o preço.';
   else aviso+='✓ Cobrar '+fmt(cobrar)+' no marketplace para manter sua margem.';
   document.getElementById('mkt-aviso').textContent=aviso;
@@ -3543,7 +3728,7 @@ function abrirEditarProjeto(i){
   var h=hist[i];
   document.getElementById('edit_nome').value=h.nome||'';
   document.getElementById('edit_valor').value=h.final?h.final.toFixed(2):'';
-  document.getElementById('edit_status').value=h.status||'pendente';
+  document.getElementById('edit_status').value=h.rascunho?'rascunho':(h.status||'pendente');
   document.getElementById('edit_data_entrega').value=h.dataEntrega||'';
   document.getElementById('edit_obs').value=h.obs||'';
   document.getElementById('edit-overlay').classList.add('open');
@@ -3565,7 +3750,10 @@ function salvarEdicao(){
     hist[editIdx].lucro=novoValor-custoBase;
     hist[editIdx].margem=custoBase>0?Math.round(((novoValor-custoBase)/custoBase)*100):hist[editIdx].margem;
   }
-  hist[editIdx].status=document.getElementById('edit_status').value;
+  var novoStatus=document.getElementById('edit_status').value;
+  hist[editIdx].status=novoStatus;
+  /* Sincroniza flag rascunho com o status */
+  hist[editIdx].rascunho=(novoStatus==='rascunho');
   hist[editIdx].dataEntrega=document.getElementById('edit_data_entrega').value||null;
   hist[editIdx].obs=document.getElementById('edit_obs').value.trim();
   try{localStorage.setItem('hist3d',JSON.stringify(hist));}catch(e){}
