@@ -63,7 +63,7 @@
         }else if(tentativas>0){
           setTimeout(function(){tentarCarregar(tentativas-1);},200);
         }else{
-          console.error('[Firebase] carregarDadosFirebase nunca foi definida');
+          toast('⚠ Erro de inicialização. Recarregue a página.');
         }
       }
       tentarCarregar(20);
@@ -243,9 +243,17 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 /* MODAL TEMPLATE */
 
 /* QUANTIDADE DE PEÇAS */
-.qtd-result{display:none;background:var(--green-light);border-radius:var(--radius-sm);padding:10px 14px;margin-top:8px;border-left:3px solid var(--green);}
-.qtd-result-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;}
-.qtd-result-row strong{color:var(--green);}
+.qtd-result{display:none;background:var(--green-light);border-radius:var(--radius-sm);padding:12px 14px;margin-top:8px;border:1px solid #C0DD97;}
+/* Lote — seções */
+.lote-secao{margin-bottom:10px;}
+.lote-secao:last-child{margin-bottom:0;}
+.lote-secao-titulo{font-size:10px;font-weight:700;color:#5a8a5a;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.lote-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.lote-card{background:rgba(255,255,255,0.55);border-radius:8px;padding:8px 10px;text-align:center;}
+.lote-card.destaque{background:rgba(255,255,255,0.85);border:1px solid #A8D88A;}
+.lote-card-label{font-size:10px;color:#5a8a5a;margin-bottom:2px;font-weight:500;}
+.lote-card-val{font-size:16px;font-weight:700;color:#2d6a2d;}
+.lote-card-val.menor{font-size:13px;}
 
 /* MARKETPLACE */
 .mkt-box{margin-top:8px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;}
@@ -259,8 +267,6 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 .mkt-plataformas{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
 .mkt-btn{font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid var(--border-mid);background:var(--bg);color:var(--text-3);cursor:pointer;-webkit-appearance:none;transition:all 0.15s;white-space:nowrap;}
 .mkt-btn.active{border-color:var(--green);color:var(--green);background:var(--green-light);}
-.mkt-custom-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.mkt-custom-row label{font-size:12px;color:var(--text-3);white-space:nowrap;}
 .mkt-resultado{background:var(--bg);border-radius:var(--radius-sm);padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .mkt-res-item{display:flex;flex-direction:column;gap:2px;}
 .mkt-res-label{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;}
@@ -276,7 +282,6 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
   .resumo-card:last-child{grid-column:1/-1;}
   .btn-row-calc{grid-template-columns:1fr 1fr;}
   .result-grid{grid-template-columns:1fr 1fr;}
-  .compact-row{flex-direction:column;}
   .compact-field{width:100%;}
 }
 
@@ -396,8 +401,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px
 .field textarea{resize:vertical;min-height:64px;line-height:1.5;}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green);background:var(--card);}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-@media(max-width:699px){.grid2,.grid3{grid-template-columns:1fr;}}
+@media(max-width:699px){.grid2,}
 .suffix-wrap{position:relative;}
 .suffix-wrap em{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text-3);pointer-events:none;font-style:normal;font-weight:600;}
 .suffix-wrap input{padding-right:44px;}
@@ -411,7 +415,6 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px
 .platform-tag.cults{background:#f3e8ff;color:#7a1ab8;border-color:#d0a0f5;}
 
 /* CAMPO COMPACTO — tempo e falhas */
-.compact-row{display:-webkit-flex;display:flex;gap:8px;-webkit-align-items:flex-end;align-items:flex-end;}
 .compact-field{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;gap:4px;}
 .compact-field label{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;}
 .compact-input-wrap{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;background:var(--bg);border:1px solid var(--border-mid);border-radius:var(--radius-sm);overflow:hidden;height:42px;}
@@ -466,9 +469,6 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px
 
 /* SIMULADOR */
 
-.sim-card{background:var(--card);border-radius:var(--radius-sm);padding:10px 12px;border:1px solid var(--border);}
-.sim-label{font-size:11px;font-weight:500;color:var(--text-3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.04em;}
-.sim-val{font-size:16px;font-weight:600;color:var(--text);}
 .sim-val.verde{color:var(--green);}
 .sim-val.azul{color:var(--blue);}
 
@@ -478,10 +478,18 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px
 .metric{background:var(--bg);border-radius:var(--radius-sm);padding:10px 12px;border:1px solid var(--border);}
 .metric-label{font-size:11px;font-weight:500;color:var(--text-3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.04em;}
 .metric-value{font-size:15px;font-weight:600;color:var(--text);}
-.metric-value.highlight{color:var(--green);}
 .metric.green{background:var(--green-light);border-color:#C0DD97;}
 .metric.green .metric-label{color:#3B6D11;}
 .metric.green .metric-value{color:var(--green-text);}
+.metric.destaque{background:var(--amber-light);border-color:#E8C080;}
+.metric.destaque .metric-label{color:var(--amber);}
+.metric.destaque .metric-value{font-size:17px;font-weight:700;color:var(--amber);}
+.metric.destaque-lucro{border-color:#A8D88A;background:var(--green-light);}
+.metric.destaque-lucro .metric-label{color:#3a7a3a;}
+.metric.destaque-lucro .metric-value{font-size:17px;font-weight:700;color:#2d6a2d;}
+.metric.destaque-final{border-color:var(--green);border-width:2px;}
+.metric.destaque-final .metric-label{color:var(--green-text);}
+.metric.destaque-final .metric-value{font-size:20px;font-weight:800;color:var(--green-text);}
 
 /* BUTTONS */
 .divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
@@ -587,10 +595,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px
 .cli-info-label{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;}
 .cli-info-val{font-size:13px;font-weight:500;color:var(--text);}
 .cli-proj-count{display:-webkit-inline-flex;display:inline-flex;-webkit-align-items:center;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--green-light);color:var(--green);}
-.cli-proj-item{display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:center;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;}
 .cli-proj-item:last-child{border-bottom:none;}
-.cli-proj-item span{color:var(--text-3);font-size:12px;}
-.cli-proj-item strong{color:var(--green);font-weight:600;}
 .cli-whatsapp-btn{display:-webkit-inline-flex;display:inline-flex;-webkit-align-items:center;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:8px 14px;border-radius:var(--radius-sm);border:1.5px solid #C0DD97;color:#3B6D11;background:var(--green-light);cursor:pointer;text-decoration:none;margin-bottom:10px;}
 
 /* FINANCEIRO */
@@ -660,7 +665,6 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
 .orc-rodape{margin-top:1rem;font-size:12px;color:var(--text-3);text-align:center;font-style:italic;}
 
 /* QR CODE */
-.qr-label{font-size:12px;color:var(--text-3);text-align:center;}
 
 /* TOAST */
 .toast{position:fixed;bottom:96px;left:50%;-webkit-transform:translateX(-50%) translateY(20px);transform:translateX(-50%) translateY(20px);background:#1a1a18;color:#fff;padding:11px 20px;border-radius:20px;font-size:13px;font-weight:500;z-index:200;opacity:0;-webkit-transition:all 0.25s;transition:all 0.25s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-md);}
@@ -882,7 +886,7 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
     </div>
     <div style="-webkit-flex:1;flex:1;">
       <div class="app-name">PrintCal <em>By Kêdes</em></div>
-      <div class="app-sub">Impressora 3D <span class="version-badge">v0.38</span></div>
+      <div class="app-sub">Impressora 3D <span class="version-badge">v0.41</span></div>
     </div>
     <button class="theme-btn" onclick="alternarTema()" title="Alternar tema" id="theme-btn" aria-label="Alternar tema claro/escuro">🌙</button>
     <button class="theme-btn" onclick="abrirChangelog()" title="O que há de novo" style="font-size:16px;" aria-label="Ver novidades da versão">📋</button>
@@ -1098,82 +1102,50 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
           <div class="field"><label>Peso do filamento <span>(g)</span></label><div class="suffix-wrap"><em>g</em><input type="number" id="peso" value="50" min="0" step="1" inputmode="numeric" oninput="calcular()" /></div></div>
         </div>
 
-        <!-- Linha 2: Qtd + Cliente -->
+        <!-- Linha 2: Cliente -->
         <div class="grid2" style="gap:10px;margin-bottom:10px;">
-          <div class="field"><label>Quantidade de peças</label><div class="suffix-wrap"><em>un</em><input type="number" id="qtd_pecas" value="1" min="1" step="1" inputmode="numeric" oninput="atualizarQtd()" /></div></div>
-          <div class="field"><label>Cliente <span>(opcional)</span></label><select id="cliente-select"><option value="">— Sem cliente —</option></select></div>
+          <div class="field" style="grid-column:1/-1;"><label>Cliente <span>(opcional)</span></label><select id="cliente-select"><option value="">— Sem cliente —</option></select></div>
         </div>
 
-        <!-- Linha 3: Tempo + Falhas + Data (compactos) -->
-        <div class="compact-row" style="-webkit-flex-wrap:wrap;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <!-- Linha 3: Tempo + Falhas + Qtd + Data -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1.8fr 1.8fr;gap:8px;">
           <div class="compact-field">
             <label>Horas</label>
             <div class="compact-input-wrap">
-              <input type="number" id="tempo_h" value="3" min="0" step="1" inputmode="numeric" oninput="calcular()" />
+              <input type="number" id="tempo_h" value="3" min="0" step="1" inputmode="numeric" oninput="calcular()" style="flex:1;width:100%;" />
               <em>h</em>
             </div>
           </div>
           <div class="compact-field">
             <label>Min</label>
             <div class="compact-input-wrap">
-              <input type="number" id="tempo_m" value="0" min="0" max="59" step="1" inputmode="numeric" oninput="calcular()" />
+              <input type="number" id="tempo_m" value="0" min="0" max="59" step="1" inputmode="numeric" oninput="calcular()" style="flex:1;width:100%;" />
               <em>m</em>
             </div>
           </div>
           <div class="compact-field">
             <label>Falhas</label>
             <div class="compact-input-wrap">
-              <input type="number" id="falha" value="5" min="0" max="100" step="1" inputmode="numeric" oninput="calcular()" />
+              <input type="number" id="falha" value="5" min="0" max="100" step="1" inputmode="numeric" oninput="calcular()" style="flex:1;width:100%;" />
               <em>%</em>
             </div>
           </div>
-          <div class="compact-field" style="flex:1;min-width:130px;">
+          <div class="compact-field" title="Quantas peças impressas ao mesmo tempo na mesa. Custos fixos (energia, desgaste, MO) são divididos entre todas.">
+            <label style="color:var(--green);">🖨 Qtd na mesa</label>
+            <div class="compact-input-wrap" style="border-color:var(--green);background:var(--green-light);">
+              <input type="number" id="qtd_pecas" value="1" min="1" step="1" inputmode="numeric" oninput="calcular()" style="flex:1;width:100%;font-size:17px;font-weight:700;color:var(--green);text-align:center;" />
+              <em style="color:var(--green);flex-shrink:0;">un</em>
+            </div>
+          </div>
+          <div class="compact-field">
             <label>Entrega</label>
-            <input type="date" id="data_entrega" style="border:1px solid var(--border-mid);border-radius:var(--radius-sm);padding:0 10px;font-size:13px;font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);height:42px;width:100%;-webkit-appearance:none;transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor=''" />
+            <input type="date" id="data_entrega" style="border:1px solid var(--border-mid);border-radius:var(--radius-sm);padding:0 8px;font-size:13px;font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);height:42px;width:100%;-webkit-appearance:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor=''" />
           </div>
         </div>
 
-        <!-- Linha 4: Link do arquivo -->
-        <div class="field" style="margin-bottom:10px;">
-          <label>Link do arquivo <span>(opcional)</span></label>
-          <div class="link-wrap">
-            <input type="url" id="link_projeto" placeholder="https://makerworld.com/..." oninput="atualizarPlataforma()" inputmode="url" autocomplete="off" />
-            <div class="link-platform"><span class="platform-tag" id="platform-tag">URL</span></div>
-          </div>
-        </div>
-
-        <!-- Linha 5: Fotos -->
-        <div>
-          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Fotos <span style="font-weight:400;text-transform:none;letter-spacing:0;">(opcional)</span></div>
-          <div class="foto-area" id="foto-area"></div>
-          <input type="file" id="foto-galeria" accept="image/*" multiple style="display:none;" onchange="adicionarFotos(event)" />
-          <input type="file" id="foto-camera" accept="image/*" capture="environment" style="display:none;" onchange="adicionarFotos(event)" />
-        </div>
-
       </div>
 
-      <div style="display:flex;align-items:center;justify-content:space-between;margin:1.25rem 0 0.65rem;">
-        <div class="section-title" style="margin:0;">Filamentos AMS</div>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:var(--text-3);font-weight:500;">
-          <input type="checkbox" id="ams-toggle" onchange="toggleAMS()" style="width:14px;height:14px;accent-color:var(--green);" />
-          Usar AMS
-        </label>
-      </div>
-      <div class="card" style="padding:0.75rem 1rem;display:none;" id="ams-wrap">
-        <div class="ams-slots">
-          <div class="ams-slot"><span class="ams-num">1</span><div class="ams-dot" id="dot-0"></div><select id="ams-0" onchange="atualizarDots()"><option value="">— Nenhum —</option></select></div>
-          <div class="ams-slot"><span class="ams-num">2</span><div class="ams-dot" id="dot-1"></div><select id="ams-1" onchange="atualizarDots()"><option value="">— Nenhum —</option></select></div>
-          <div class="ams-slot"><span class="ams-num">3</span><div class="ams-dot" id="dot-2"></div><select id="ams-2" onchange="atualizarDots()"><option value="">— Nenhum —</option></select></div>
-          <div class="ams-slot"><span class="ams-num">4</span><div class="ams-dot" id="dot-3"></div><select id="ams-3" onchange="atualizarDots()"><option value="">— Nenhum —</option></select></div>
-        </div>
-      </div>
-
-      <div class="section-title">Observação</div>
-      <div class="field">
-        <textarea id="obs" placeholder="Ex: 3 unidades, urgente, cor específica..." style="height:52px;min-height:52px;padding:10px 12px;font-size:14px;border:1px solid var(--border-mid);border-radius:var(--radius-sm);font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);resize:none;width:100%;transition:border-color 0.15s,background 0.15s;" onfocus="this.style.borderColor='var(--green)';this.style.background='var(--card)'" onblur="this.style.borderColor='';this.style.background=''"></textarea>
-      </div>
-
-      <!-- Campos hidden que alimentam o cálculo — valores vêm das Configurações -->
+      <!-- Campos hidden -->
       <input type="hidden" id="preco_rolo" value="100" />
       <input type="hidden" id="watts" value="300" />
       <input type="hidden" id="kwh" value="1.26" />
@@ -1182,29 +1154,14 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
       <input type="hidden" id="mao_obra" value="5" />
       <input type="hidden" id="taxa_cartao" value="4.98" />
 
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;padding:10px 14px;background:var(--green-light);border-radius:var(--radius-sm);border-left:3px solid var(--green);">
-        <div style="flex:1;">
-          <span style="font-size:12px;color:var(--green-text);font-weight:600;letter-spacing:0.02em;">Custos das configurações</span>
-          <div id="custo-resumo" style="font-size:11px;color:var(--text-3);margin-top:2px;">Carregando...</div>
-        </div>
-        <button class="btn" onclick="trocarAba('cfg')" style="font-size:12px;padding:4px 10px;color:var(--green);border-color:var(--border-mid);background:transparent;flex-shrink:0;">Editar</button>
-      </div>
-
-      <div class="section-title">Margem de lucro</div>
-      <div class="card" style="padding:1rem;">
-        <div class="margin-row">
-          <label>Margem</label>
-          <input type="range" id="margem" min="0" max="200" value="40" step="5" oninput="atualizarMargem()" />
-          <span class="margin-val" id="margem_val">40%</span>
-        </div>
-        <div class="margem-indicator media" id="margem-indicator">
-          <div class="margem-dot"></div>
-          <span class="margem-label">Margem razoável — considere aumentar</span>
-          <span class="margem-pct" id="margem-pct-label">40%</span>
-        </div>
-        <div class="preco-minimo-box" id="preco-minimo-box" style="display:none;">
-          <span class="preco-minimo-label">Preço mínimo (sem lucro)</span>
-          <span class="preco-minimo-val" id="preco-minimo-val">—</span>
+      <!-- Margem compacta -->
+      <div style="display:flex;align-items:center;gap:10px;margin:1rem 0 0.5rem;padding:10px 14px;background:var(--card);border-radius:var(--radius-sm);border:1px solid var(--border);">
+        <span style="font-size:12px;font-weight:600;color:var(--text-2);white-space:nowrap;">Margem</span>
+        <input type="range" id="margem" min="0" max="1000" value="40" step="5" oninput="atualizarMargem()" style="flex:1;" />
+        <span class="margin-val" id="margem_val" style="font-size:14px;font-weight:700;color:var(--green);min-width:36px;text-align:right;">40%</span>
+        <div id="preco-minimo-box" style="display:none;padding-left:10px;border-left:1px solid var(--border);">
+          <span style="font-size:10px;color:var(--text-3);">mín.</span>
+          <span style="font-size:13px;font-weight:600;color:var(--red);margin-left:3px;" id="preco-minimo-val">—</span>
         </div>
       </div>
 
@@ -1233,22 +1190,69 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
         </button>
       </div>
 
+      <!-- RESULTADO -->
       <div class="result-grid" id="resultados" style="display:none;">
         <div class="metric"><div class="metric-label">Filamento</div><div class="metric-value" id="r_fil">—</div></div>
         <div class="metric"><div class="metric-label">Energia</div><div class="metric-value" id="r_eng">—</div></div>
         <div class="metric"><div class="metric-label">Depreciação</div><div class="metric-value" id="r_dep">—</div></div>
         <div class="metric"><div class="metric-label">Mão de obra</div><div class="metric-value" id="r_mao">—</div></div>
-        <div class="metric green"><div class="metric-label">Custo total</div><div class="metric-value" id="r_custo">—</div></div>
-        <div class="metric"><div class="metric-label">Custo + falhas</div><div class="metric-value" id="r_falha">—</div></div>
-        <div class="metric"><div class="metric-label">Lucro</div><div class="metric-value" id="r_margem_val">—</div></div>
-        <div class="metric"><div class="metric-label">Preço final</div><div class="metric-value highlight" id="r_final">—</div></div>
+        <div class="metric destaque"><div class="metric-label">Custo total</div><div class="metric-value" id="r_custo">—</div></div>
+        <div class="metric destaque"><div class="metric-label">Custo + falhas</div><div class="metric-value" id="r_falha">—</div></div>
+        <div class="metric destaque-lucro"><div class="metric-label">Lucro</div><div class="metric-value" id="r_margem_val">—</div></div>
+        <div class="metric destaque-final"><div class="metric-label">Preço final</div><div class="metric-value" id="r_final">—</div></div>
       </div>
 
       <!-- RESULTADO QUANTIDADE -->
       <div class="qtd-result" id="qtd-result">
-        <div class="qtd-result-row"><span>Custo unitário</span><strong id="qtd-unitario">—</strong></div>
-        <div class="qtd-result-row"><span>Preço unitário (com margem)</span><strong id="qtd-preco-unit">—</strong></div>
-        <div class="qtd-result-row" style="padding-top:6px;border-top:1px solid #C0DD97;margin-top:4px;"><span>Total <span id="qtd-label">×1 peça</span></span><strong id="qtd-total" style="font-size:16px;">—</strong></div>
+
+        <!-- Cabeçalho do lote -->
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+          <span style="font-size:16px;">🖨</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#2d6a2d;" id="qtd-lote-titulo">Impressão em lote</div>
+            <div style="font-size:11px;color:#5a8a5a;" id="qtd-mesa-label">— peças na mesa ao mesmo tempo</div>
+          </div>
+        </div>
+
+        <!-- Seção 1: Por peça -->
+        <div class="lote-secao">
+          <div class="lote-secao-titulo">Preço por peça</div>
+          <div class="lote-grid">
+            <div class="lote-card">
+              <div class="lote-card-label">Custo unitário</div>
+              <div class="lote-card-val menor" id="qtd-unitario">—</div>
+            </div>
+            <div class="lote-card destaque">
+              <div class="lote-card-label">Cobrar por peça</div>
+              <div class="lote-card-val" id="qtd-preco-unit">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção 2: Total do pedido -->
+        <div class="lote-secao" id="qtd-secao-total">
+          <div class="lote-secao-titulo">Total do pedido (<span id="qtd-label">×1</span> peças)</div>
+          <div class="lote-card destaque" style="text-align:center;padding:10px;">
+            <div class="lote-card-label">Total a cobrar</div>
+            <div class="lote-card-val" id="qtd-total" style="font-size:20px;">—</div>
+          </div>
+        </div>
+
+        <!-- Seção 3: Comparação 1 por vez -->
+        <div class="lote-secao" id="qtd-secao-comparacao">
+          <div class="lote-secao-titulo">Vantagem do lote</div>
+          <div class="lote-grid" style="margin-bottom:6px;">
+            <div class="lote-card">
+              <div class="lote-card-label">1 por vez custaria</div>
+              <div class="lote-card-val menor" id="qtd-comparacao" style="color:#888;">—</div>
+            </div>
+            <div class="lote-card" style="background:rgba(200,240,200,0.7);">
+              <div class="lote-card-label">Economia por peça</div>
+              <div class="lote-card-val menor" id="qtd-economia" style="color:#2d6a2d;">—</div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- TOGGLE CARTÃO -->
@@ -1270,6 +1274,53 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
       </div>
 
       <!-- PAINEL MARKETPLACE -->
+      <!-- CAMPOS ADICIONAIS (após resultado) -->
+      <div id="campos-adicionais" style="display:none;margin-top:12px;">
+        <div class="card" style="padding:1rem;">
+
+          <!-- AMS -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:0.05em;">Filamentos AMS</span>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:var(--text-3);font-weight:500;">
+              <input type="checkbox" id="ams-toggle" onchange="toggleAMS()" style="width:14px;height:14px;accent-color:var(--green);" />
+              Usar AMS
+            </label>
+          </div>
+          <div style="display:none;margin-bottom:14px;" id="ams-wrap">
+            <div class="ams-slots">
+              <div class="ams-slot"><span class="ams-num">1</span><div class="ams-dot" id="dot-0"></div><select id="ams-0" onchange="atualizarDots()"><option value="">— Nenhum —</option></select></div>
+              <div class="ams-slot"><span class="ams-num">2</span><div class="ams-dot" id="dot-1"></div><select id="ams-1" onchange="atualizarDots()"><option value="">— Nenhum —</option></select></div>
+              <div class="ams-slot"><span class="ams-num">3</span><div class="ams-dot" id="dot-2"></div><select id="ams-2" onchange="atualizarDots()"><option value="">— Nenhum —</option></select></div>
+              <div class="ams-slot"><span class="ams-num">4</span><div class="ams-dot" id="dot-3"></div><select id="ams-3" onchange="atualizarDots()"><option value="">— Nenhum —</option></select></div>
+            </div>
+          </div>
+
+          <!-- Link -->
+          <div class="field" style="margin-bottom:10px;">
+            <label>Link do arquivo <span>(opcional)</span></label>
+            <div class="link-wrap">
+              <input type="url" id="link_projeto" placeholder="https://makerworld.com/..." oninput="atualizarPlataforma()" inputmode="url" autocomplete="off" />
+              <div class="link-platform"><span class="platform-tag" id="platform-tag">URL</span></div>
+            </div>
+          </div>
+
+          <!-- Fotos -->
+          <div style="margin-bottom:10px;">
+            <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Fotos <span style="font-weight:400;text-transform:none;letter-spacing:0;">(opcional)</span></div>
+            <div class="foto-area" id="foto-area"></div>
+            <input type="file" id="foto-galeria" accept="image/*" multiple style="display:none;" onchange="adicionarFotos(event)" />
+            <input type="file" id="foto-camera" accept="image/*" capture="environment" style="display:none;" onchange="adicionarFotos(event)" />
+          </div>
+
+          <!-- Observação -->
+          <div class="field">
+            <label>Observação <span>(opcional)</span></label>
+            <textarea id="obs" placeholder="Ex: 3 unidades, urgente, cor específica..." style="height:52px;min-height:52px;padding:10px 12px;font-size:14px;border:1px solid var(--border-mid);border-radius:var(--radius-sm);font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);resize:none;width:100%;transition:border-color 0.15s,background 0.15s;" onfocus="this.style.borderColor='var(--green)';this.style.background='var(--card)'" onblur="this.style.borderColor='';this.style.background=''"></textarea>
+          </div>
+
+        </div>
+      </div>
+
       <div class="mkt-box" id="mkt-box" style="display:none;">
         <button class="mkt-toggle" onclick="toggleMkt()">
           <div class="mkt-toggle-label">
@@ -1479,7 +1530,7 @@ kbd{background:var(--bg);border:1.5px solid var(--border-mid);border-radius:5px;
       <div class="card" style="padding:1rem;">
         <div class="margin-row">
           <label>Margem</label>
-          <input type="range" id="cfg_margem" min="0" max="200" value="40" step="5" oninput="document.getElementById('cfg_margem_val').textContent=this.value+'%'" />
+          <input type="range" id="cfg_margem" min="0" max="1000" value="40" step="5" oninput="document.getElementById('cfg_margem_val').textContent=this.value+'%'" />
           <span class="margin-val" id="cfg_margem_val">40%</span>
         </div>
       </div>
@@ -2162,48 +2213,75 @@ function getTempo(){var h=+document.getElementById('tempo_h').value||0;var m=+do
 
 function calcularBase(){
   var peso=Math.max(0,+document.getElementById('peso').value||0);
+  var qtd=Math.max(1,+document.getElementById('qtd_pecas').value||1);
   var tempo=getTempo(),falha=Math.max(0,Math.min(99,+document.getElementById('falha').value||0));
   var pr=Math.max(0,+document.getElementById('preco_rolo').value||0);
   var w=Math.max(0,+document.getElementById('watts').value||0);
   var kw=Math.max(0,+document.getElementById('kwh').value||0);
   var vi=Math.max(0,+document.getElementById('val_imp').value||0);
-  var vd=Math.max(1,+document.getElementById('vida').value||1); /* mínimo 1h para evitar /0 */
+  var vd=Math.max(1,+document.getElementById('vida').value||1);
   var mo=Math.max(0,+document.getElementById('mao_obra').value||0);
-  var fil=(peso/1000)*pr,eng=(w/1000)*tempo*kw,dep=(vi/vd)*tempo,mao=mo*tempo;
-  var custo=fil+eng+dep+mao,cf=custo*(1+falha/100);
-  /* Garante que nenhum valor seja NaN ou Infinity */
+
+  /* Custo total da mesa — peso e tempo são da mesa inteira */
+  var fil=(peso/1000)*pr;
+  var eng=(w/1000)*tempo*kw;
+  var dep=(vi/vd)*tempo;
+  var mao=mo*tempo;
+  var custoMesa=fil+eng+dep+mao;
+  var cfMesa=custoMesa*(1+falha/100);
+
   var safe=function(v){return isFinite(v)&&!isNaN(v)?v:0;};
-  return{fil:safe(fil),eng:safe(eng),dep:safe(dep),mao:safe(mao),custo:safe(custo),com_falha:safe(cf)};
+  return{
+    fil:safe(fil),eng:safe(eng),dep:safe(dep),mao:safe(mao),
+    custoMesa:safe(custoMesa),
+    cfMesa:safe(cfMesa),
+    qtd:qtd
+  };
 }
 
 function calcular(){
   haptic('light');
-  var mg=+document.getElementById('margem').value||0,b=calcularBase();
-  var lucro=b.com_falha*(mg/100),final=b.com_falha+lucro;
+  var mg=+document.getElementById('margem').value||0;
+  var b=calcularBase();
+
+  var lucroMesa=b.cfMesa*(mg/100);
+  var finalMesa=b.cfMesa+lucroMesa;
+
+  /* Resultado principal — mesa inteira */
   document.getElementById('r_fil').textContent=fmt(b.fil);
   document.getElementById('r_eng').textContent=fmt(b.eng);
   document.getElementById('r_dep').textContent=fmt(b.dep);
   document.getElementById('r_mao').textContent=fmt(b.mao);
-  document.getElementById('r_custo').textContent=fmt(b.custo);
-  document.getElementById('r_falha').textContent=fmt(b.com_falha);
-  document.getElementById('r_margem_val').textContent=fmt(lucro);
-  document.getElementById('r_final').textContent=fmt(final);
+  document.getElementById('r_custo').textContent=fmt(b.custoMesa);
+  document.getElementById('r_falha').textContent=fmt(b.cfMesa);
+  document.getElementById('r_margem_val').textContent=fmt(lucroMesa);
+  document.getElementById('r_final').textContent=fmt(finalMesa);
   document.getElementById('resultados').style.display='grid';
+  document.getElementById('campos-adicionais').style.display='block';
   document.getElementById('preco-minimo-box').style.display='flex';
-  document.getElementById('preco-minimo-val').textContent=fmt(b.com_falha);
-  /* Mostra box do cartão se taxa configurada */
+  document.getElementById('preco-minimo-val').textContent=fmt(b.cfMesa);
+
   var taxa=+document.getElementById('taxa_cartao').value||0;
   if(taxa>0){
     document.getElementById('cartao-box').style.display='block';
     var desc=cfg.taxa_desc||'Cartão';
     document.getElementById('cartao-taxa-label').textContent='Taxa '+desc+': '+taxa.toFixed(2).replace('.',',')+'%';
   }
-  window._last={fil:b.fil,eng:b.eng,dep:b.dep,mao:b.mao,custo:b.custo,com_falha:b.com_falha,lucro:lucro,final:final,margem:mg,tempo:getTempo()};
+
+  window._last={
+    fil:b.fil,eng:b.eng,dep:b.dep,mao:b.mao,
+    custo:b.custoMesa,
+    com_falha:b.cfMesa,
+    lucro:lucroMesa,
+    final:finalMesa,
+    margem:mg,
+    tempo:getTempo(),
+    qtd:b.qtd
+  };
   atualizarCartao();
   atualizarQtd();
   document.getElementById('share-btn-box').style.display='block';
   document.getElementById('mkt-box').style.display='block';
-  /* Recalcula marketplace se painel estiver aberto */
   if(document.getElementById('mkt-body').classList.contains('open'))calcularMkt();
 }
 
@@ -2228,12 +2306,6 @@ function atualizarCartao(){
 function atualizarMargem(){
   var v=+document.getElementById('margem').value;
   document.getElementById('margem_val').textContent=v+'%';
-  document.getElementById('margem-pct-label').textContent=v+'%';
-  var el=document.getElementById('margem-indicator'),lbl=el.querySelector('.margem-label');
-  el.className='margem-indicator';
-  if(v<20){el.classList.add('baixa');lbl.textContent='Margem baixa — pode não cobrir imprevistos';}
-  else if(v<=50){el.classList.add('media');lbl.textContent='Margem razoável — considere aumentar';}
-  else{el.classList.add('boa');lbl.textContent='Boa margem — retorno saudável';}
   calcular();
 }
 
@@ -2469,6 +2541,7 @@ function salvar(){
   var hh=Math.floor(d.tempo),mm=Math.round((d.tempo-hh)*60);
   var ts=hh+'h'+(mm>0?' '+mm+'min':'');
   var plat=link?detectarPlataforma(link):null;
+  var mesaQtd=d.qtd||1;
   var item={
     nome:nome,custo:d.com_falha,margem:d.margem,final:d.final,lucro:d.lucro,
     tempo:ts,ams:getAMSSelecionados(),obs:obs,link:link,plat:plat,
@@ -2476,6 +2549,7 @@ function salvar(){
     dataEntrega:de,
     status:ehRascunho?'rascunho':'pendente',
     rascunho:ehRascunho,
+    mesaQtd:mesaQtd>1?mesaQtd:null,
     fotos:fotosAtuais.slice(),
     data:new Date().toLocaleDateString('pt-BR'),
     dataISO:new Date().toISOString(),
@@ -2508,6 +2582,7 @@ function limpar(){
   atualizarDots();
   fotosAtuais=[];renderFotoArea();
   document.getElementById('qtd-result').style.display='none';
+  document.getElementById('campos-adicionais').style.display='none';
   document.getElementById('share-btn-box').style.display='none';
   document.getElementById('resultados').style.display='none';
   document.getElementById('preco-minimo-box').style.display='none';
@@ -2589,7 +2664,7 @@ function renderHist(){
       (h.rascunho?'<span class="rascunho-badge">📝 Rascunho</span>':
         '<span class="status-badge '+s+'" style="font-size:10px;padding:2px 7px;" onclick="event.stopPropagation();ciclarStatus('+ri+')">'+statusLabel(s)+'</span>')+
       prazoLabel(h.dataEntrega)+'</div>'+
-      '<div class="hist-sub">'+h.data+cn+' · '+h.tempo+'</div>'+dots+'</div>'+
+      '<div class="hist-sub">'+h.data+cn+' · '+h.tempo+(h.mesaQtd?' · <span style="font-size:10px;background:#e8f5e9;color:#3a7a3a;padding:1px 5px;border-radius:4px;font-weight:700;">🖨 '+h.mesaQtd+'×lote</span>':'')+'</div>'+dots+'</div>'+
       '<div style="display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;gap:8px;flex-shrink:0;">'+
       '<span class="hist-price" style="'+(h.rascunho?'color:var(--text-3);':'')+'">'+(h.rascunho?'~':'')+fmt(h.final)+'</span>'+
       '<button class="btn-del" onclick="event.stopPropagation();deletarHistComDesfazer('+ri+')">✕</button></div></div>'+
@@ -2760,7 +2835,7 @@ if('serviceWorker' in navigator){
     var swBlob=new Blob([swCode],{type:'application/javascript'});
     var swUrl=URL.createObjectURL(swBlob);
     navigator.serviceWorker.register(swUrl).then(function(){
-      console.log('PrintCal: Service Worker registrado — modo offline ativo');
+      /* SW registrado */
     }).catch(function(){});
   }catch(e){}
 }
@@ -2857,7 +2932,7 @@ function fecharPWABanner(){
 
 /* ── MÚLTIPLOS USUÁRIOS FIREBASE ── */
 /* Sync badge simplificado — badge removido do header */
-function setSyncBadge(cor,label){console.log("[sync]",label);}
+function setSyncBadge(cor,label){/* badge removido em v0.26 — stub mantido para compatibilidade */}
 
 /* ── NOTIFICAÇÕES MELHORADAS ── */
 function agendarNotificacoesAvancadas(){
@@ -2880,14 +2955,46 @@ function testarNotificacao(){
 /* ── CHANGELOG IN-APP ── */
 var CHANGELOG=[
   {
+    versao:'v0.41',
+    titulo:'Limpeza e auditoria de código',
+    itens:[
+      'setSyncBadge silenciosa — console.log de sync removido',
+      'console.logs de SW, modo demo e Firebase removidos',
+      '9 classes CSS mortas removidas (qr-label, sim-card, grid3, etc)',
+      'Erro de inicialização do Firebase agora mostra toast ao usuário'
+    ]
+  },
+  {
+    versao:'v0.40',
+    titulo:'Cálculo de impressão em lote',
+    itens:[
+      'Campo Qtd na mesa — informa quantas peças são impressas ao mesmo tempo',
+      'Custos fixos (energia, desgaste, MO) divididos entre as peças do lote',
+      'Filamento escala proporcionalmente com a quantidade',
+      'Resultado mostra preço unitário, total do lote e comparação com 1 por vez',
+      'Badge de lote no histórico identifica projetos com múltiplas peças'
+    ]
+  },
+  {
+    versao:'v0.39',
+    titulo:'Sincronização em tempo real',
+    itens:[
+      'onValue substitui get pontual — mudanças aparecem em segundos em todos os dispositivos',
+      'Deletar no computador remove do celular automaticamente (sem recarregar)',
+      'Listener cancelado corretamente ao fazer logout ou excluir conta',
+      'Rascunhos locais mesclados sem ressuscitar projetos deletados na nuvem',
+      'Toast discreto nas atualizações — sem interromper o fluxo'
+    ]
+  },
+  {
     versao:'v0.38',
     titulo:'Correções e auditoria de código',
     itens:[
-      'limpar() corrigido — eliminadas duplicações, reseta campos de marketplace',
-      'ciclarStatus() não altera mais projetos marcados como rascunho',
-      'Opção Rascunho adicionada no modal de edição de projeto',
+      'limpar() sem duplicações — reseta todos os campos incluindo marketplace',
+      'ciclarStatus() não altera rascunhos',
+      'Opção Rascunho no modal de edição de projeto',
       'Contagem do histórico corrigida para filtro de rascunhos',
-      'Custo fixo do marketplace oculta linha quando vazio (sem closest frágil)'
+      'Changelog reescrito com histórico real de todas as versões'
     ]
   },
   {
@@ -3008,7 +3115,7 @@ function abrirChangelog(){
   document.getElementById('changelog-overlay').classList.add('open');
   haptic('light');
   /* Marca como visto */
-  localStorage.setItem('changelog-seen','v0.38');
+  localStorage.setItem('changelog-seen','v0.41');
 }
 function fecharChangelog(e){
   if(!e||e.target===document.getElementById('changelog-overlay'))
@@ -3016,7 +3123,7 @@ function fecharChangelog(e){
 }
 function verificarChangelog(){
   var visto=localStorage.getItem('changelog-seen');
-  if(visto!=='v0.38'){
+  if(visto!=='v0.41'){
     setTimeout(abrirChangelog,3000);
   }
 }
@@ -3698,15 +3805,24 @@ function usarComoBases(i){
 
 /* ── QUANTIDADE DE PEÇAS ── */
 function atualizarQtd(){
-  var qtd=+document.getElementById('qtd_pecas').value||1;
+  var qtd=Math.max(1,+document.getElementById('qtd_pecas').value||1);
   var box=document.getElementById('qtd-result');
-  if(qtd<=1){box.style.display='none';return;}
-  if(!window._last){box.style.display='none';return;}
-  var custo=window._last.com_falha,final=window._last.final;
-  document.getElementById('qtd-unitario').textContent=fmt(custo);
-  document.getElementById('qtd-preco-unit').textContent=fmt(final);
-  document.getElementById('qtd-label').textContent='×'+qtd+' peças';
-  document.getElementById('qtd-total').textContent=fmt(final*qtd);
+  if(!window._last||qtd<=1){box.style.display='none';return;}
+
+  var finalMesa=window._last.final;
+  var custoMesa=window._last.com_falha;
+  var finalUnit=finalMesa/qtd;
+  var custoUnit=custoMesa/qtd;
+
+  document.getElementById('qtd-lote-titulo').textContent='Impressão em lote';
+  document.getElementById('qtd-mesa-label').textContent=qtd+' peças na mesa ao mesmo tempo';
+  document.getElementById('qtd-unitario').textContent=fmt(custoUnit);
+  document.getElementById('qtd-preco-unit').textContent=fmt(finalUnit);
+  document.getElementById('qtd-label').textContent='×'+qtd;
+  document.getElementById('qtd-total').textContent=fmt(finalMesa);
+  document.getElementById('qtd-secao-total').style.display='block';
+  document.getElementById('qtd-secao-comparacao').style.display='none';
+
   box.style.display='block';
 }
 
@@ -3807,13 +3923,13 @@ function excluirConta(){
   var senha=prompt('Digite sua senha para confirmar a exclusão:');
   if(!senha)return;
   var email=user.email;
+  /* Cancela listener antes de excluir */
+  if(_fbListenerOff){_fbListenerOff();_fbListenerOff=null;}
   window._fbSignIn(window._fbAuth,email,senha)
     .then(function(){
-      /* Apaga dados do Firebase primeiro */
       if(window._fbDb){
         window._fbSet(window._fbRef(window._fbDb,'users/'+user.uid),null).catch(function(){});
       }
-      /* Deleta a conta */
       return import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js')
         .then(function(m){return m.deleteUser(user);});
     })
@@ -4004,6 +4120,8 @@ function confirmarLogout(){
 }
 
 function fazerLogout(){
+  /* Cancela o listener em tempo real antes de deslogar */
+  if(_fbListenerOff){_fbListenerOff();_fbListenerOff=null;}
   window._fbSignOut(window._fbAuth).then(function(){
     hist=[];fils=[];cfg={};clientes=[];
     renderHist();renderSelectsAMS();renderSelectClientes();renderListaFilamentos();atualizarWidget();atualizarBadgePedidos();
@@ -4012,27 +4130,37 @@ function fazerLogout(){
 }
 
 /* ── SYNC FIREBASE COM AUTH ── */
+/* Referência ao listener ativo — para cancelar ao fazer logout */
+var _fbListenerOff=null;
+
 window.carregarDadosFirebase=function(uid){
   if(!window._fbDb){
     setTimeout(function(){window.carregarDadosFirebase(uid);},500);
     return;
   }
+  /* Cancela listener anterior se existir */
+  if(_fbListenerOff){_fbListenerOff();_fbListenerOff=null;}
+
   mostrarSkeleton();
   setSyncBadge('#BA7517','Carregando...');
-  /* Preserva rascunhos locais antes de carregar da nuvem */
-  var rascunhosLocais=hist.filter(function(h){return h.rascunho===true;});
+
   var dbRef=window._fbRef(window._fbDb,'users/'+uid);
-  window._fbGet(dbRef).then(function(snapshot){
+  var primeiraVez=true;
+
+  /* onValue — dispara imediatamente e a cada mudança na nuvem */
+  _fbListenerOff=window._fbOnValue(dbRef,function(snapshot){
+    /* Preserva rascunhos que estão só localmente */
+    var rascunhosLocais=hist.filter(function(h){return h.rascunho===true;});
+
     if(snapshot.exists()){
       var dados=snapshot.val();
       if(dados.hist){
         hist=dados.hist;
-        /* Mescla rascunhos locais que não estão na nuvem (identificados pelo dataISO) */
-        var idsNuvem=hist.map(function(h){return h.dataISO;});
+        /* Mescla rascunhos locais que NÃO existem na nuvem
+           (usa dataISO como chave — se foi deletado na nuvem, não reinsere) */
+        var idsNuvem=new Set(hist.map(function(h){return h.dataISO;}));
         rascunhosLocais.forEach(function(r){
-          if(!idsNuvem.includes(r.dataISO)){
-            hist.unshift(r);
-          }
+          if(!idsNuvem.has(r.dataISO))hist.unshift(r);
         });
       }
       if(dados.fils)fils=dados.fils;
@@ -4046,27 +4174,41 @@ window.carregarDadosFirebase=function(uid){
       }catch(e){}
       carregarConfig();renderSelectsAMS();renderSelectClientes();renderListaFilamentos();
       ocultarSkeleton();renderPedidos();atualizarBadgePedidos();atualizarWidget();
-      setTimeout(function(){verificarPagamentosPendentes();agendarNotificacoes();verificarAniversarios();},1500);
       setSyncBadge('#5dcea0','Nuvem ✓');
       setTimeout(function(){setSyncBadge('#5dcea0','Nuvem');},2000);
       localStorage.setItem('onboard-done','1');
-      toast('✓ Dados carregados da nuvem');
+      if(primeiraVez){
+        /* Na primeira carga, mostra toast e verifica notificações */
+        toast('✓ Dados carregados da nuvem');
+        setTimeout(function(){
+          verificarPagamentosPendentes();
+          agendarNotificacoes();
+          verificarAniversarios();
+        },1500);
+        primeiraVez=false;
+      }else{
+        /* Atualizações subsequentes — silencioso, só toast discreto */
+        toast('🔄 Dados atualizados');
+      }
     }else{
       ocultarSkeleton();
-      localStorage.removeItem('onboard-done');
-      verificarOnboarding();
+      if(primeiraVez){
+        localStorage.removeItem('onboard-done');
+        verificarOnboarding();
+        primeiraVez=false;
+      }
     }
-  }).catch(function(err){
-    setSyncBadge('#E24B4A','Erro');
+  },function(err){
+    setSyncBadge('#E24B4A','Erro de sync');
     ocultarSkeleton();
-    toast('⚠ Erro ao carregar dados: '+err.message);
+    toast('⚠ Erro de sincronização: '+err.message);
   });
 };
 
 window.salvarDadosFirebase=function(){
   var user=window._fbUser;
   if(!user||!window._fbDb)return;
-  if(window._modoDemo){console.log('[Firebase] Modo demo — sync bloqueado');return;}
+  if(window._modoDemo){return;}
   var dados={
     hist:hist.map(function(h){var c=JSON.parse(JSON.stringify(h));delete c.fotos;return c;}),
     fils:fils,clientes:clientes,cfg:cfg,ts:Date.now()
